@@ -336,13 +336,7 @@ WHERE job = 'SALESMAN'
    OR empno LIKE '78%';
 --empno는 숫자만 들어갈수 있음 문자열이 형변환된것 (문자열은 숫자를 포함하기 때문에)
 
-과제 ) emp테이블에서 job이 SALESMAN이거나 사원번호가 78로 시작하는 직원의 정보를 다음과 같이 조회하세요
-(LIKE 연산자를 사용하지 않고 )
 
-SELECT *
-FROM emp
-WHERE job = 'SALESMAN' 
-   OR empno between 7800 AND 7899; 
    
 
 
