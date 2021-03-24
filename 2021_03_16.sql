@@ -205,7 +205,7 @@ FROM
    FROM (SELECT empno, ename
            FROM emp
        ORDER BY ename))
-WHERE rn BETWEEN (:page-1)*:pageSize +1 AND :page*:pageSize;
+WHERE rn BETWEEN (:page-1)*:pageSize +1 AND :page*:pageSize; --Size이런식으로 표기하는거: 낙타표기법 
 --pageSize 지정해주고 page 지정해주기 (ex) pageSize 5, page 3 이런식으로 넣을때 공백 (엔터) 이런거 들어가면안됨)
 
 pageSize: 5건
@@ -265,3 +265,28 @@ FROM emp e;
 
 SELECT ROWNUM rn, e.empno 
 FROM emp e, emp m, dept;
+
+
+
+
+SELECT rownum, emp.*
+FROM emp
+WHERE rownum between 1 and  10;
+
+SELECT *
+FROM 
+(SELECT rownum rn, emp.*
+FROM emp) 
+WHERE rn between 11 AND 20;
+
+SELECT *
+FROM
+(SELECT rownum rn, empno, ename
+FROM 
+(SELECT *
+FROM emp
+ORDER BY ename))
+WHERE rn between 11 AND 14;
+
+
+

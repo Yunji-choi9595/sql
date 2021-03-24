@@ -148,19 +148,19 @@ SELECT *
 FROM buyprod
 WHERE buy_date = TO_DATE('2005/01/25', 'YYYY/MM/DD');
 
-SELECT b.buy_date, b.buy_prod, p.prod_id, p.prod_name, b.buyqty
+SELECT b.buy_date, b.buy_prod,p.prod_id, p.prod_name, b.buy_qty
 FROM buyprod b, prod p 
-WHERE b.buyprod = p.prod_id(+);
+WHERE b.buy_prod = p.prod_id(+)
 
 SELECT COUNT(*)
 FROM prod;
 
 SELECT buy_date, buy_prod, prod_id, prod_name, buy_qty
-FROM buyprod RIGHT OUTER JOIN prod ON (buyprod.buyprod = prod.prod_id AND buyprod.buy_date = TO_DATE('2005/01/25', 'YYYY/MM/DD'));
+FROM buyprod RIGHT OUTER JOIN prod ON (buyprod.buy_prod = prod.prod_id AND buyprod.buy_date = TO_DATE('2005/01/25', 'YYYY/MM/DD'));
 
 SELECT buy_date, buy_prod, prod_id, prod_name, buy_qty
 FROM buyprod, prod 
-WHERE buyprod.buyprod = prod.prod_id(+) AND
+WHERE buyprod.buy_prod = prod.prod_id(+) AND
        buyprod.buy_date(+) = TO_DATE('2005/01/25', 'YYYY/MM/DD');
 
 모든 제품을 다 보여주고 , 실제 구매가 있을 때는 구매수량을 조회, 없을때는 null로 표현 
@@ -171,3 +171,7 @@ SELECT *
 FROM prod;
 
 
+과제1)
+SELECT r.region_id, r.region_name, c. country_name
+FROM regions r, countries c 
+WHERE r.region_id = c.countries_id

@@ -16,12 +16,18 @@ date 이후의 가장 첫번째 주간일자에 해당하는 date를 반환
 LAST_DAY(***)
 인자: date : date가 속한 월의 마지막 일자를 date로 반환 
 
+
+
 MONTHS_BETWEEN 
+
+
+FROM emp;
+
 SELECT ename, TO_CHAR(hiredate, 'yyyy/mm/dd HH24:mi:ss') hiredate,
        MONTHS_BETWEEN(sysdate,hiredate) month_between, --근속년도 따질때 
        ADD_MONTHS(SYSDATE, 5) ADD_MONTHS,--현재 날짜에 5개월 더한거 
        ADD_MONTHS(TO_DATE('2021-03-05','YYYY-MM-DD'), 5)  ADD_MONTHS2,
-       NEXT_DAY(SYSDATE, 1) NEXT_DAY,
+       NEXT_DAY(SYSDATE, 1) NEXT_DAY, --다음 첫번째 주간일자
        LAST_DAY(SYSDATE) LAST_DAY, --3월 31일 출력
        TO_DATE(TO_CHAR(SYSDATE, 'YYYYMM') || '01', 'YYYYMMDD') FIRST_DAY
 --       SYSDATE를 이용해서 sysdate가 속한 월의 첫번째 날짜 구하기
@@ -38,11 +44,13 @@ SELECT TO_DATE('2021' || '0101', 'YYYYMMDD')
 FROM dual; 
 
 Fuction (date 종합 실습 fn3)
--파라미터로 yyyymm형식의 문자열을 사용하여 (ex : yyyymm = 201912)
+-파라미터로 yyyymm형식의 문자열을 사용하여 (ex  :yyyymm = 201912)
 해당 년월에 해당하는 일자 수를 구해보세요
 yyyymm = 201912 -> 31
 yyyymm = 201911 -> 30
 yyyymm = 201602 -> 29
+
+SELECT TO_DATE('201912' , 'yyyymm')
 
 fn3) LAST_DAY (날짜) 
 우리에게 주어진건 문자
@@ -66,8 +74,7 @@ FROM emp
 WHERE  TO_CHAR(empno) = '7369';
 --7369가 문자로 묵시적인 형변환, 읽어들일땐 숫자로 읽음(explain을 이용해서)
 
-SELECT TO_DATE ('201912' , 'YYYYMM'), LAST_DAY(TO_DATE ('201912' , 'DD'))
-FROM DUAL;
+
 
 Function (NUMBER)
 -NUMBER
@@ -133,8 +140,7 @@ if(expr1 != null)
 else
  COALESCE(expr2, expr3....); --재귀함수 호출 (자기자신을 호출한다)
  
- SELECT empno, sal, comm, COALESCE(
- FROM emp; 
+
  
  Fuction (null 실습 fn4)
  -emp테이블의 정보를 다음과 같이 조회도도록 쿼리를 작성하세요
@@ -239,10 +245,9 @@ SELECT empno, ename, hiredate,
       MOD(TO_CHAR(hiredate,'YYYY'),2) =   
       MOD(TO_CHAR(SYSDATE,'YYYY'),2) THEN '건강검진 대상자' --1 THEN '건강검진대상자'
     ELSE '건강검진 비대상자'
-    END CONTACT_TO_DOCTOR
-    --DECODE( MOD(TO_CHAR(hiredate,'YYYY'),2) ,
-      --                   MOD(TO_CHAR(SYSDATE+365,'YYYY'),2), '건강검진 대상자' 
-        --                                                       '건강검진 비대상자') CONTACT_TO_DOTOR_DECODE
+    END CONTACT_TO_DOCTOR,
+    DECODE( MOD(TO_CHAR(hiredate,'YYYY'),2) ,
+    MOD(TO_CHAR(SYSDATE,'YYYY'),2), '건강검진 대상자' ,'건강검진 비대상자') CONTACT_TO_DOTOR_DECODE
 FROM emp;
 
 
@@ -335,8 +340,9 @@ from table
  -emp테이블을 이용하여 다음을 구하시오
  직원중 가장 높은 급여 max_sal
  
-SELECT max(sal)
-FROM emp;
+SELECT deptno, max(sal), min(sal),ROUND(avg(sal),2), sum(sal), COUNT(sal), COUNT(mgr), COUNT(*)
+FROM emp
+group by deptno;
  
  직원중 가장 낮은 급여 min_sal
  SELECT min(sal)
@@ -346,6 +352,13 @@ FROM emp;
  
  SELECT ROUND(avg(sal),2)
  FROM emp
+ 
+ 
+ select to_Date(sysdate)
+ from users
+ 
+SELECT userid, usernm, reg_dt, NVL(reg_dt, TO_CHAR(sysdate, 'YYYYMMDD')) N_REG_DT
+FROM users
  
  
  직원의 급여합 sum_sal
