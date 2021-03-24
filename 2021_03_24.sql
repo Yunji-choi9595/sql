@@ -331,3 +331,6 @@ SELECT *
 FROM product;
 SELECT *
 FROM cycle;
+
+--programmers 라는 프로그램 사이트 
+--sql 고득점 kit 가면 연습할수있음
