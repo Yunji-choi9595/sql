@@ -19,6 +19,7 @@ FROM emp
 WHERE deptno = (SELECT deptno
                   FROM emp
                   WHERE ename = 'SMITH')
+
             
 SELECT *
 FROM emp
@@ -138,7 +139,7 @@ FROM emp
 WHERE deptno NOT IN (10,20,NULL);   
 --null값을 넣은것
 ==> !(deptno = 10 OR depno = 20 OR deptno = NULL)
-  ===> deptno != 10 OR depno != 20 OR deptno != NULL)                               
+===> deptno != 10 OR depno != 20 OR deptno != NULL)                               
                                       FALSE
                                       
 TRUE AND TRUE AND TRUE ==> TRUE
@@ -149,6 +150,9 @@ SELECT *
 FROM emp
 WHERE empno NOT IN (SELECT NVL(mgr,9999) --null처리를해야한다 (**시험출제**) 
                       FROM emp);
+--NOT IN은 조건이 OR가 아니라 AND로 묶여져있음
+--서브쿼리만 실행하면 KING이 9999 로 나옴 (NULL값이 있으면 WHERE절은 거짓이 되기때문에 nvl처리를 해준것 
+
 
 SELECT *
 FROM emp
@@ -183,6 +187,7 @@ mgr, deptno
 (7698,10) , (7698,30), (7839,10), (7839,30)
 
 요구사항: ALLEN 또는 CLERK의 소속 부서번호가 같으면서 상사도 같은 직원들을 조회 
+
 SELECT *
 FROM emp
 
@@ -192,6 +197,7 @@ WHERE (mgr, deptno) IN
                     (SELECT mgr, deptno
                     FROM emp
                     WHERE ename IN ('ALLEN', 'CLARK'))
+                
 
 페어와이즈 / 논페어와이즈 개념 차이 알아두기 
 
@@ -262,6 +268,7 @@ WHERE sal >= (SELECT avg(sal)
 직원이 속한 부서의 급여 평균보다 높은 급여를 받는 직원을 조회
 --이건 20번 부서 평균보다 높은 직원 조회 
 
+﻿
 SELECT empno, ename, sal, deptno
 FROM emp e
 WHERE e.sal >= (SELECT avg(sal)
@@ -275,7 +282,7 @@ FROM emp e
 WHERE e.sal >= (SELECT avg(sal)
                 FROM emp a
                 WHERE a.deptno = e.deptno)
-
+                
 
 --20번 부서의 급여 평균 
 SELECT avg(sal)
@@ -302,17 +309,23 @@ FROM dept
 --empno 의 데이터와 deptno가 불일치하는 부서 이름을 조회 하면됨 
 --우리가 알수 있는건 직원이 속한 부서 
 
+﻿
+SELECT *
+
+FROM dept
+
+WHERE deptno NOT IN (SELECT deptno FROM emp);
+
+﻿
+
+
 SELECT *
 FROM dept
 WHERE deptno NOT IN (SELECT deptno
                     FROM emp);
 --이해안감....ㅋ 
 
-SELECT deptno, dname, loc
-FROM 
-(SELECT *
-FROM dept d, emp e
-WHERE e.deptno != d.deptno);
+
 
 sub5) cycle, product 테이블을 이용하여 cid=1인 고객이 애음하지 않는 제품을 
 조회하는 쿼리를 작성하세요
@@ -322,11 +335,6 @@ WHERE pid NOT IN (SELECT pid
                     FROM cycle
                     WHERE cid = 1);
                     
-(SELECT c.cid, p.pid, p.pname
-FROM cycle c, product p
-WHERE c.pid = p.pid 
-  AND NOT IN (cid=1))
-
 SELECT *
 FROM product;
 SELECT *
@@ -334,3 +342,7 @@ FROM cycle;
 
 --programmers 라는 프로그램 사이트 
 --sql 고득점 kit 가면 연습할수있음
+
+
+﻿
+﻿
